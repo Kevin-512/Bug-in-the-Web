@@ -1,8 +1,11 @@
 import React from "react";
+import Grid from './Grid';
 
 function App() {
   return (
-    <h1>App</h1>
+    <div className="App">
+      <Grid />
+    </div>
   );
 }
 
