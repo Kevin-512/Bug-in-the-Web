@@ -6,7 +6,7 @@ import Captcha from './Captcha';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Captcha />
+    <App />
   </React.StrictMode>
 );
 
