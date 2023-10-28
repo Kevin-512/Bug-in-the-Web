@@ -1,108 +1,65 @@
-import React from "react";
-
-import captcha from'./images/captcha.png';
-import {useEffect, useState} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import CarR from './images/redcar.png'
-import {isCursorAtStart} from "@testing-library/user-event/dist/utils";
-export default function Car() {
+const DraggableObject = ({ id }) => {
+    const [isDragging, setDragging] = useState(false);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const dragRef = useRef(null);
 
-    const { useRef } = React
-    const car1 = useRef(null)
-    const dragProps = useRef()
+    const handleMouseDown = (e) => {
+        setDragging(true);
+    };
 
-    const car2 = useRef(null)
-    const car3 = useRef(null)
-    //car2
-    const [carsX, setCarsX] = useState([car1,car2])
-    const initialiseDragX = event => {
+    const handleMouseUp = (e) => {
+        setDragging(false);
+    };
 
-        //const { left, top } = car1.current.getBoundingClientRect()
-        carsX.forEach((element) =>{
-            const { target, clientX, clientY } = event
-            const { offsetTop, offsetLeft } = target
-            const  { left, top } = element.current.getBoundingClientRect()
-            dragProps.current = {
-                dragStartLeft: left,
-                dragStartTop: top,
-                dragStartX: clientX,
-                dragStartY: clientY
-            }
-            window.addEventListener('mousemove', startDraggingX, false)
-            window.addEventListener('mouseup', stopDraggingX, false)
-        })
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
 
+        const newX = e.clientX - dragRef.current.clientWidth / 2;
+        setPosition((prevPosition) => ({
+            ...prevPosition,
+            x: newX,
+        }));
+    };
 
+    useEffect(() => {
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
 
-    }
-
-
-    const startDraggingX = ({ clientX, clientY }) => {
-        car1.current.style.transform = `translate(${dragProps.current.dragStartLeft + clientX - dragProps.current.dragStartX}px`
-        // ${dragProps.current.dragStartTop + clientY - dragProps.current.dragStartY}px)
-    }
-
-    const stopDraggingX = () => {
-        window.removeEventListener('mousemove', startDraggingX, false)
-        window.removeEventListener('mouseup', stopDraggingX, false)
-    }
-
-    //===============================
-
-    const initialiseDragY = event => {
-        const { target, clientX, clientY } = event
-        const { offsetTop, offsetLeft } = target
-        const { left, top } = car3.current.getBoundingClientRect()
-
-        dragProps.current = {
-            dragStartLeft: left,
-            dragStartTop: top,
-            dragStartX: clientX,
-            dragStartY: clientY
-        }
-        window.addEventListener('mousemove', startDraggingY, false)
-        window.addEventListener('mouseup', stopDraggingY, false)
-    }
-
-
-    const startDraggingY = ({ clientX, clientY }) => {
-        car3.current.style.transform = `translate(0px ,${dragProps.current.dragStartTop + clientY - dragProps.current.dragStartY}px)`
-        //
-    }
-
-    const stopDraggingY = () => {
-        window.removeEventListener('mousemove', startDraggingY, false)
-        window.removeEventListener('mouseup', stopDraggingY, false)
-    }
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging]);
 
     return (
-        <div>
-            <button
-                onMouseDown={initialiseDragX}
-                ref={car1}
-            >
-            <img src={CarR}
-                 draggable="false"
-                 alt={"car Red"}/>
-            </button>
+        <img
+            ref={dragRef}
+            src={CarR}
+            draggable={false}
+            style={{
+                position: 'absolute',
+                left: position.x,
+                top: position.y,
+                width: '50px',
+                height: '50px',
+                // backgroundColor: id === 1 ? 'red' : 'blue',
+                cursor: 'grab',
+            }}
+            onMouseDown={handleMouseDown}
 
-            <button
-                onMouseDown={initialiseDragX}
-                ref={car2}
-            >
-                <img src={CarR}
-                     draggable="false"
-                     alt={"car Red"}/>
-            </button>
-
-            <button
-                onMouseDown={initialiseDragY}
-                ref={car3}
-            >
-                <img src={CarR}
-                     draggable="false"
-                     alt={"car Red"}/>
-            </button>
-        </div>
-
+        ></img>
     );
-}
+};
+
+const App = () => {
+    return (
+        <div style={{ position: 'relative', height: '200px', width: '400px' }}>
+            <DraggableObject id={1} />
+            <DraggableObject id={2} />
+        </div>
+    );
+};
+
+export default App;
