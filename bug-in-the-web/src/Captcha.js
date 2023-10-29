@@ -1,6 +1,7 @@
 import React from "react";
 import captcha from'./images/captcha.png';
 import {useEffect, useState, useRef} from 'react';
+import {Button} from "@mui/material";
 
 export default function Captcha() {
     const darkBoxRef = useRef(null)
@@ -70,7 +71,6 @@ export default function Captcha() {
     }
 
     const submitStyle = {
-      cursor: "pointer",
       position: "relative",
       left: `${buttonState.x}px`,
       top: `${buttonState.y}px`,
@@ -128,7 +128,7 @@ export default function Captcha() {
       <div>
           <div style={VerifyBoxStyle}>
             <div ref={darkBoxRef} style={darkBoxStyle}>
-              <button ref={btnRef} onMouseUp={handleSubmit} onMouseDown={initialiseDrag} style={submitStyle}>Verify</button>
+              <Button ref={btnRef} onMouseUp={handleSubmit} onMouseDown={initialiseDrag} variant="contained" color="primary" style={submitStyle}>Verify</Button>
             </div>
             <p>I'm not a robot</p>
             <img src={captcha} alt="captcha" style={{width: 50, height: 50}}></img>

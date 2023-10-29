@@ -143,9 +143,9 @@ const DateFlipper = () => {
         <CardFlipper value={day} fixed={isDayFixed} />
       </div>
       <div>
-        <button onClick={() => changeDate('year')}>Change Year</button>
-        <button onClick={() => changeDate('month')}>Change Month</button>
-        <button onClick={() => changeDate('day')}>Change Day</button>
+        <button onClick={() => changeDate('year')}>{isYearFixed ? "Unlock Year" : "Lock Year"}</button>
+        <button onClick={() => changeDate('month')}>{isMonthFixed ? "Unlock Month" : "Lock Month"}</button>
+        <button onClick={() => changeDate('day')}>{isDayFixed ? "Unlock Day" : "Lock Day"}</button>
         <button onClick={handleSubmit} disabled={!isYearFixed || !isMonthFixed || !isDayFixed}>
           Submit
         </button>
