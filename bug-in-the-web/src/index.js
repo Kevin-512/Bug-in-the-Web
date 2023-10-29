@@ -8,9 +8,9 @@ import Car from './car';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <App /> */}
+    <App />
     {/* <Captcha /> */}
-    <DateFlipper />
+    {/* <DateFlipper /> */}
   </React.StrictMode>
 );
 

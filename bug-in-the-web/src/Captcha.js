@@ -8,6 +8,7 @@ export default function Captcha() {
     const [buttonState, setButtonState] = useState({x:0, y:0, allowed: true, dragged: false})
     const dragProps = useRef()
     const intervalIdRef = useRef(null);
+    const [submitText, setSubmitText] = useState("")
     
     const initialiseDrag = (event) => {
       if (!buttonState.allowed) {
@@ -113,6 +114,7 @@ export default function Captcha() {
       }
       else if (buttonState.allowed && buttonState.dragged) {
         console.log("passed")
+        setSubmitText("Successfully verified")
       }  
     };
 
@@ -131,6 +133,9 @@ export default function Captcha() {
             <p>I'm not a robot</p>
             <img src={captcha} alt="captcha" style={{width: 50, height: 50}}></img>
           </div>
+          <p>
+            {submitText}
+          </p>
       </div>
     );
   }

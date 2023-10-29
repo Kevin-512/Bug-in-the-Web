@@ -5,6 +5,7 @@ const DateFlipper = () => {
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth()+1);
   const [day, setDay] = useState(currentDate.getDate());
+  const [dateText, setDateText] = useState("")
 
   function getYearRange(baseYear, size) {
     const result = [];
@@ -114,7 +115,7 @@ const DateFlipper = () => {
   }, [yearIndex, monthIndex, dayIndex, range])
 
   const handleSubmit = () => {
-    console.log('Submitted Date:', year, month, day);
+    setDateText("Submitted Date " + year + " " + month + " " + day);
   };
 
   const cardStyle = {
@@ -148,6 +149,9 @@ const DateFlipper = () => {
         <button onClick={handleSubmit} disabled={!isYearFixed || !isMonthFixed || !isDayFixed}>
           Submit
         </button>
+        <p>
+          {dateText}
+        </p>
       </div>
     </div>
   );

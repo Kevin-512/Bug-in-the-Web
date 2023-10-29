@@ -60,7 +60,7 @@ const DraggableObject = ({ id, initialX, onMove, positions  }) => {
     );
 };
 
-const App = () => {
+const Car = () => {
 
     const [positions, setPositions] = useState({ 1: 200, 2: 300 });
     
@@ -109,4 +109,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default Car;
