@@ -5,8 +5,9 @@ import {useEffect, useState, useRef} from 'react';
 export default function Captcha() {
     const darkBoxRef = useRef(null)
     const btnRef = useRef(null)
-    const [buttonState, setButtonState] = useState({x:0, y:0, delta:300, allowed: true, dragged: false})
+    const [buttonState, setButtonState] = useState({x:0, y:0, allowed: true, dragged: false})
     const dragProps = useRef()
+    const intervalIdRef = useRef(null);
     
     const initialiseDrag = (event) => {
       if (!buttonState.allowed) {
@@ -22,6 +23,11 @@ export default function Captcha() {
         }
         window.addEventListener('mousemove', startDragging, false)
         window.addEventListener('mouseup', stopDragging, false)
+
+        setButtonState((prevState) => ({
+          ...prevState,
+          dragged: true,
+        }))
       }
     }
     
@@ -49,12 +55,7 @@ export default function Captcha() {
           allowed: true,
         }))
         btnRef.current.style.transform = '';
-        btnRef.current.style.transition = '';
       }
-      setButtonState((prevState) => ({
-        ...prevState,
-        dragged: true,
-      }))
     }
 
     const VerifyBoxStyle = {
@@ -72,7 +73,6 @@ export default function Captcha() {
       position: "relative",
       left: `${buttonState.x}px`,
       top: `${buttonState.y}px`,
-      transition: "top 0.5s ease",
       width: "60px",
       height: "25px"
     }
@@ -86,16 +86,41 @@ export default function Captcha() {
     const handleSubmit = (e) => {
       if (buttonState.allowed && !buttonState.dragged) {
         console.log("move button")
-        setButtonState((prevState) => ({
-          ...prevState,
-          y: prevState.y + prevState.delta,
-          allowed: false,
-        }))
+        const startX = buttonState.x; // Initial x-coordinate
+        const distanceX = 300; // Fixed x distance (adjust as needed)
+        const speed = 0.05; // Adjust the speed of the sine wave
+
+        let currentX = startX;
+        let velocity = 5;
+
+        // Set an interval to update the position every 0.1 seconds
+        intervalIdRef.current = setInterval(() => {
+          currentX += velocity;
+          const newY = Math.sin(currentX * speed) * 30; // Adjust the amplitude (30) as needed
+    
+          setButtonState((prevState) => ({
+            ...prevState,
+            x: currentX,
+            y: newY,
+            allowed: false,
+          }));
+
+          // Check if the button has reached the specified distance
+          if (currentX < startX || (currentX - startX >= distanceX)) {
+            velocity = -velocity; // Change the direction to move backward
+          }
+        }, 50);
       }
       else if (buttonState.allowed && buttonState.dragged) {
         console.log("passed")
       }  
     };
+
+    useEffect(() => {
+      if (buttonState.dragged) {
+        clearInterval(intervalIdRef.current);
+      }
+    }, [buttonState.dragged]);
   
     return (
       <div>
