@@ -129,7 +129,7 @@ export default function Captcha() {
               <button ref={btnRef} onMouseUp={handleSubmit} onMouseDown={initialiseDrag} style={submitStyle}>Verify</button>
             </div>
             <p>I'm not a robot</p>
-            <img src={captcha} style={{width: 50, height: 50}}></img>
+            <img src={captcha} alt="captcha" style={{width: 50, height: 50}}></img>
           </div>
       </div>
     );

@@ -104,14 +104,14 @@ const DateFlipper = () => {
       clearInterval(monthInterval);
       clearInterval(dayInterval);
     };
-  }, [isYearFixed, isMonthFixed, isDayFixed]);
+  }, [isYearFixed, isMonthFixed, isDayFixed, range]);
 
   
   useEffect(() => {
     setYear(range.year[yearIndex]);
     setMonth(range.month[monthIndex]);
     setDay(range.day[dayIndex]);
-  }, [yearIndex, monthIndex, dayIndex])
+  }, [yearIndex, monthIndex, dayIndex, range])
 
   const handleSubmit = () => {
     console.log('Submitted Date:', year, month, day);
